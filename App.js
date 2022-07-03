@@ -10,14 +10,22 @@ import Create from './src/screens/create';
 
 const Stack = createNativeStackNavigator();
 export default function App() {
+  const user = false; // not authenticated
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Signin" component={Signin} />
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Edit" component={Edit} />
-        <Stack.Screen name="Create" component={Create} />
+        {user ? (
+          <>
+            <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Edit" component={Edit} />
+            <Stack.Screen name="Create" component={Create} />
+          </>
+        ) : (
+          <>
+            <Stack.Screen name="Signin" component={Signin} />
+            <Stack.Screen name="Signup" component={Signup} />
+          </>
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
