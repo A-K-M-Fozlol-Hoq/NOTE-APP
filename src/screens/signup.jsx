@@ -4,6 +4,7 @@ import Button from '../components/Button'
 import Input from '../components/Input'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import {auth, db} from '../../App.js'
+import { collection, doc, setDoc, addDoc, getDocs, onSnapshot, query, where } from "firebase/firestore";
 
 export default function SignUp({navigation}) {
   const genderOptions = ["Male", "Female"]
@@ -33,7 +34,16 @@ export default function SignUp({navigation}) {
     try{
       // step 1: Create a new user
       const result = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(result,'df');
+      // console.log(result);
+      // step 2: Create the user profile in the database
+      const docRef = await addDoc(collection(db, 'users'),{
+        name:name, 
+        email:email,
+        age:age,
+        gender:gender,
+        uid: result.user.uid
+      })
+      console.log(docRef)
     }catch(error) {
       console.log('error --> ', error);
     }
