@@ -1,17 +1,36 @@
-import { View, SafeAreaView,Image,  Text, TextInput } from 'react-native'
+import { View, SafeAreaView,Image,  Text, TextInput,StyleSheet, Pressable,  } from 'react-native'
 import React from 'react'
+import Button from '../components/Button'
 
-export default function Signin() {
+export default function Signin({navigation}) {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <Image
         style={{ height: 270, width: 320,  alignSelf: 'center' }}
         source={require('../../assets/empty-state.png')}
       />
       <Text style={{fontSize:18, fontWeight: 'bold', textAlign: 'center'}}>Never forget your notes</Text>
-      <View>
-        <TextInput placeholder="emaol" />
+      <View style={{paddingHorizontal:16, paddingVertical:25}}>
+        <TextInput style={styles.input} placeholder="Email address" />
+        <TextInput style={styles.input} placeholder="Password" secureTextEntry />
+
+        
+      </View>
+
+      <View style={{flex:1, justifyContent:"flex-end", alignItems: "center", marginBottom:20}}>
+        <Button title={"Login"} customStyles={{alignSelf:"center", marginBottom:60}} />
+        <Pressable onPress={() =>navigation.navigate("Signup")}>
+          <Text>Don't have an account?{" "} <Text style={{color:"green", fontWeight:'bold'}}>Sign up</Text> </Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   )
 }
+const styles=StyleSheet.create({
+  input:{
+    height:48,
+    borderBottomWidth:1,
+    borderBottomColor:'#ccc',
+    marginBottom:25
+  }
+})
