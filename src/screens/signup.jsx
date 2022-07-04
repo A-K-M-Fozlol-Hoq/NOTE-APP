@@ -14,6 +14,8 @@ export default function Signup({navigation}) {
         <Input placeholder="Full name" />
         <Input placeholder="Age" />
 
+        <View><Text style={{marginVertical:20}}>Select Gender</Text></View>
+
         {
           genderOptions.map(option =>{
             const selected = option === gender;
@@ -31,7 +33,7 @@ export default function Signup({navigation}) {
       </View>
 
       <View style={{flex:1, justifyContent:"flex-end", alignItems: "center", marginBottom:20}}>
-        <Button title={"Sign up"} customStyles={{alignSelf:"center", marginBottom:60}} />
+        <Button title={"Sign up"} customStyles={{alignSelf:"center", marginBottom:60, marginTop:20}} />
         <Pressable  onPress={() =>navigation.navigate("Signin")}>
           <Text>Already have an account?{" "} <Text style={{color:"green", fontWeight:'bold'}}>Sign in</Text> </Text>
         </Pressable>

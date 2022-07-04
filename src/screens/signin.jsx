@@ -16,8 +16,8 @@ export default function Signin({navigation}) {
         <Input placeholder="Password" secureTextEntry />
       </View>
 
-      <View style={{flex:1, justifyContent:"flex-end", alignItems: "center", marginBottom:20}}>
-        <Button title={"Login"} customStyles={{alignSelf:"center", marginBottom:60}} />
+      <View style={{flex:1, justifyContent:"flex-end", alignItems: "center", marginBottom:20,}}>
+        <Button title={"Login"} customStyles={{alignSelf:"center", marginBottom:60, marginTop:20}} />
         <Pressable onPress={() =>navigation.navigate("Signup")}>
           <Text>Don't have an account?{" "} <Text style={{color:"green", fontWeight:'bold'}}>Sign up</Text> </Text>
         </Pressable>
