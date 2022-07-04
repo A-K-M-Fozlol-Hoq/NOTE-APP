@@ -2,17 +2,42 @@ import { View, SafeAreaView,Image,  Text, TextInput,StyleSheet, Pressable,  } fr
 import React, { useState } from 'react'
 import Button from '../components/Button'
 import Input from '../components/Input'
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 
-export default function Signup({navigation}) {
+export default function SignUp({navigation}) {
   const genderOptions = ["Male", "Female"]
   const [gender, setGender] = useState(null)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+
+  const auth = getAuth();
+
+  const signUp = ()=>{
+    // step 1: Create a new user
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed in 
+      const user = userCredential.user;
+      console.log(user)
+      // step 2: Create the user profile in the database
+      // ...
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // ..
+    });
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{paddingHorizontal:16, paddingVertical:25}}>
-        <Input placeholder="Email address" />
-        <Input placeholder="Password" secureTextEntry />
-        <Input placeholder="Full name" />
-        <Input placeholder="Age" />
+        <Input placeholder="Email address" onChangeText={(text)=>setEmail(text)} />
+        <Input placeholder="Password" secureTextEntry onChangeText={(text)=>setPassword(text)} />
+        <Input placeholder="Full name" onChangeText={(text)=>setName(text)} />
+        <Input placeholder="Age" onChangeText={(text)=>setAge(text)} />
 
         <View><Text style={{marginVertical:20}}>Select Gender</Text></View>
 
@@ -33,7 +58,7 @@ export default function Signup({navigation}) {
       </View>
 
       <View style={{flex:1, justifyContent:"flex-end", alignItems: "center", marginBottom:20}}>
-        <Button title={"Sign up"} customStyles={{alignSelf:"center", marginBottom:60, marginTop:20}} />
+        <Button onPress={signUp}  title={"Sign up"} customStyles={{alignSelf:"center", marginBottom:60, marginTop:20}} />
         <Pressable  onPress={() =>navigation.navigate("Signin")}>
           <Text>Already have an account?{" "} <Text style={{color:"green", fontWeight:'bold'}}>Sign in</Text> </Text>
         </Pressable>
