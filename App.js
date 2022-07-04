@@ -8,6 +8,8 @@ import Signup from './src/screens/signup';
 import Edit from './src/screens/edit';
 import Create from './src/screens/create';
 import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBRa2FztU-l68ZI2PvC0OWfPySGfJXib10',
@@ -18,6 +20,9 @@ const firebaseConfig = {
   appId: '1:615108254541:web:df6c7d5e9b2bf710767504',
 };
 const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
 const appTheme = {
   ...DefaultTheme,
   colors: {

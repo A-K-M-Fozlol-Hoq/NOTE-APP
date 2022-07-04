@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import Button from '../components/Button'
 import Input from '../components/Input'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import {auth, db} from '../../App.js'
 
 export default function SignUp({navigation}) {
   const genderOptions = ["Male", "Female"]
@@ -12,23 +13,30 @@ export default function SignUp({navigation}) {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
 
-  const auth = getAuth();
 
-  const signUp = ()=>{
-    // step 1: Create a new user
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // Signed in 
-      const user = userCredential.user;
-      console.log(user)
-      // step 2: Create the user profile in the database
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      // ..
-    });
+  const signUp = async ()=>{
+    // // step 1: Create a new user
+    // createUserWithEmailAndPassword(auth, email, password)
+    // .then((userCredential) => {
+    //   // Signed in 
+    //   const user = userCredential.user;
+    //   console.log(user)
+    //   // step 2: Create the user profile in the database
+    //   // ...
+    // })
+    // .catch((error) => {
+    //   const errorCode = error.code;
+    //   const errorMessage = error.message;
+    //   // ..
+    // });
+
+    try{
+      // step 1: Create a new user
+      const result = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(result,'df');
+    }catch(error) {
+      console.log('error --> ', error);
+    }
   }
 
   return (
