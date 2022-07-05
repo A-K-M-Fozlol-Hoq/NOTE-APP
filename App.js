@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './src/screens/home';
@@ -36,26 +36,45 @@ const appTheme = {
 const Stack = createNativeStackNavigator();
 export default function App() {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   signOut(auth);
+  // }, []);
 
   useEffect(() => {
     const authSubscription = onAuthStateChanged(auth, (user) => {
       if (user) {
         setUser(user);
+        setLoading(false);
       } else {
         setUser(null);
+        setLoading(false);
       }
     });
 
     return authSubscription;
   }, []);
 
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator color="blue" size="large" />
+      </View>
+    );
+  }
+
   return (
     <NavigationContainer theme={appTheme}>
       <Stack.Navigator>
         {user ? (
           <>
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Edit" component={Edit} />
+            <Stack.Screen name="Home" options={{ headerShown: false }}>
+              {(props) => <Home {...props} user={user} />}
+            </Stack.Screen>
+            <Stack.Screen name="Edit">
+              {(props) => <Edit {...props} user={user} />}
+            </Stack.Screen>
             <Stack.Screen name="Create" component={Create} />
           </>
         ) : (

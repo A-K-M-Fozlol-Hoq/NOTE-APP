@@ -1,4 +1,4 @@
-import { View, SafeAreaView,Image,  Text, TextInput,StyleSheet, Pressable,  } from 'react-native'
+import { View, SafeAreaView,Image,  Text, TextInput,StyleSheet, Pressable, ActivityIndicator,  } from 'react-native'
 import React, { useState } from 'react'
 import Button from '../components/Button'
 import Input from '../components/Input'
@@ -15,6 +15,7 @@ export default function SignUp({navigation}) {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
+  const [loading, setLoading] = useState(false)
 
 
   const signUp = async ()=>{
@@ -33,6 +34,7 @@ export default function SignUp({navigation}) {
     //   // ..
     // });
 
+    setLoading(true)
     try{
       // step 1: Create a new user
       const result = await createUserWithEmailAndPassword(auth, email, password);
@@ -52,6 +54,7 @@ export default function SignUp({navigation}) {
         message: 'Account created successfully!',
         type:'success'
       })
+      setLoading(false)
 
       // step 3: Navigate to authenticated screes
     }catch(error) {
@@ -60,15 +63,16 @@ export default function SignUp({navigation}) {
         message: 'ERROR!',
         type:'danger'
       })
+      setLoading(false);
     }
   }
 
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={{paddingHorizontal:16, paddingVertical:25}}>
-        <Input placeholder="Email address" onChangeText={(text)=>setEmail(text)} />
+        <Input placeholder="Email address" onChangeText={(text)=>setEmail(text)} autoCapitalize={"none"} />
         <Input placeholder="Password" secureTextEntry onChangeText={(text)=>setPassword(text)} />
-        <Input placeholder="Full name" onChangeText={(text)=>setName(text)} />
+        <Input placeholder="Full name" onChangeText={(text)=>setName(text)}  autoCapitalize={"words"} />
         <Input placeholder="Age" onChangeText={(text)=>setAge(text)} />
 
         <View><Text style={{marginVertical:20}}>Select Gender</Text></View>
@@ -90,7 +94,12 @@ export default function SignUp({navigation}) {
       </View>
 
       <View style={{flex:1, justifyContent:"flex-end", alignItems: "center", marginBottom:20}}>
-        <Button onPress={signUp}  title={"Sign up"} customStyles={{alignSelf:"center", marginBottom:60, marginTop:20}} />
+        {
+          loading ? 
+          <ActivityIndicator />
+          : 
+          <Button onPress={signUp}  title={"Sign up"} customStyles={{alignSelf:"center", marginBottom:60, marginTop:20}} />
+        }
         <Pressable  onPress={() =>navigation.navigate("Signin")}>
           <Text>Already have an account?{" "} <Text style={{color:"green", fontWeight:'bold'}}>Sign in</Text> </Text>
         </Pressable>
