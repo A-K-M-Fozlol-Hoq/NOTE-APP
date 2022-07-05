@@ -8,8 +8,10 @@ import Signup from './src/screens/signup';
 import Edit from './src/screens/edit';
 import Create from './src/screens/create';
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import FlashMessage from 'react-native-flash-message';
+import { useEffect } from 'react';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBRa2FztU-l68ZI2PvC0OWfPySGfJXib10',
@@ -33,7 +35,18 @@ const appTheme = {
 
 const Stack = createNativeStackNavigator();
 export default function App() {
-  const user = false; // not authenticated
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const authSubscription = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
+  }, []);
+
   return (
     <NavigationContainer theme={appTheme}>
       <Stack.Navigator>
@@ -54,6 +67,7 @@ export default function App() {
           </>
         )}
       </Stack.Navigator>
+      <FlashMessage position="top" /> {/* <--- here as last component */}
     </NavigationContainer>
   );
 }

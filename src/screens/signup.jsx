@@ -5,6 +5,8 @@ import Input from '../components/Input'
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
 import {auth, db} from '../../App.js'
 import { collection, doc, setDoc, addDoc, getDocs, onSnapshot, query, where } from "firebase/firestore";
+import { showMessage, hideMessage } from "react-native-flash-message";
+
 
 export default function SignUp({navigation}) {
   const genderOptions = ["Male", "Female"]
@@ -44,8 +46,20 @@ export default function SignUp({navigation}) {
         uid: result.user.uid
       })
       console.log(docRef)
+
+      // showing success message
+      showMessage({
+        message: 'Account created successfully!',
+        type:'success'
+      })
+
+      // step 3: Navigate to authenticated screes
     }catch(error) {
       console.log('error --> ', error);
+      showMessage({
+        message: 'ERROR!',
+        type:'danger'
+      })
     }
   }
 
