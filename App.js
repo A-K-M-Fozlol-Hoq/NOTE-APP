@@ -11,7 +11,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import FlashMessage from 'react-native-flash-message';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBRa2FztU-l68ZI2PvC0OWfPySGfJXib10',
@@ -45,6 +45,8 @@ export default function App() {
         setUser(null);
       }
     });
+
+    return authSubscription;
   }, []);
 
   return (
