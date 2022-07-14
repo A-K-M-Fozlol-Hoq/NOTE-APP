@@ -17,6 +17,13 @@ export default function SignIn({navigation}) {
     .then((res) => {
       console.log('Signed in successfully', res);
     })
+    .catch((err) => {
+      console.log('error --> ', err);
+      showMessage({
+        message: 'ERROR!',
+        type:'danger'
+      })
+    })
   }
 
 
