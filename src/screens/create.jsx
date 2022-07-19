@@ -5,6 +5,7 @@ import Input from '../components/Input'
 import Button from '../components/Button'
 import { db } from '../../App'
 import { collection , addDoc } from 'firebase/firestore'
+import { showMessage } from 'react-native-flash-message'
 
 const noteColorOptions = ['red','blue','green']
 
@@ -25,6 +26,11 @@ export default function Create({navigation, route, user}) {
         uid: user.uid
       })
       setLoading(false);
+      showMessage({
+        message:"Note created successfully",
+        type:"success"
+      })
+      navigation.goBack()
     }catch(err){
       console.log(err);
       setLoading(false);
