@@ -4,30 +4,32 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import Input from '../components/Input'
 import Button from '../components/Button'
 import { db } from '../../App'
-import { collection , addDoc } from 'firebase/firestore'
 import { showMessage } from 'react-native-flash-message'
+import { doc, updateDoc } from "firebase/firestore";
 
 const noteColorOptions = ['red','blue','green']
 
 export default function Edit({navigation, route, user}) {
+  const noteItem = route.params.item;
   console.log('user -->', user,user.uid)
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [noteColor, setNoteColor] = useState('blue');
+  const [title, setTitle] = useState(noteItem.title);
+  const [description, setDescription] = useState(noteItem.description);
+  const [noteColor, setNoteColor] = useState(noteItem.color);
   const [loading, setLoading] = useState(false);
 
-  const onPressCreate = async ()=>{
+  const onPressUpdate = async ()=>{
     setLoading(true)
     try{
-      const docRef = await addDoc(collection(db, 'notes'),{
+      const noteRef = doc(db, "notes", noteItem.id);
+      await updateDoc(noteRef, {
         title:title,
         description:description,
         color:noteColor,
         uid: user.uid
-      })
+      });
       setLoading(false);
       showMessage({
-        message:"Note created successfully",
+        message:"Note updated successfully",
         type:"success"
       })
       navigation.goBack()
@@ -39,8 +41,8 @@ export default function Edit({navigation, route, user}) {
 
   return (
     <SafeAreaView style={{marginHorizontal:20 ,flex: 1}}>
-      <Input placeholder="Title" onChangeText={(text)=>setTitle(text)}/>
-      <Input placeholder="Description" multiline={true} onChangeText={(text)=>setDescription(text)} />
+      <Input placeholder="Title" onChangeText={(text)=>setTitle(text)} value={title}/>
+      <Input placeholder="Description" multiline={true} onChangeText={(text)=>setDescription(text)} value={description}/>
       <View style={{marginTop:25, marginBottom:15}}>
         <Text>Select your note color:</Text>
       </View>
@@ -62,7 +64,7 @@ export default function Edit({navigation, route, user}) {
         loading ?
         <ActivityIndicator></ActivityIndicator>
         :
-        <Button onPress={onPressCreate}  title={"Submit"} customStyles={{alignSelf:"center", marginBottom:60, marginTop:60, width:'100%'}} />
+        <Button onPress={onPressUpdate}  title={"Submit"} customStyles={{alignSelf:"center", marginBottom:60, marginTop:60, width:'100%'}} />
       }
       
     </SafeAreaView>

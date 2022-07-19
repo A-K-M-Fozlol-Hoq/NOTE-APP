@@ -4,6 +4,7 @@ import Button from '../components/Button'
 import Input from '../components/Input'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import {auth, db} from '../../App.js'
+import { showMessage } from 'react-native-flash-message'
 
 
 export default function SignIn({navigation}) {
