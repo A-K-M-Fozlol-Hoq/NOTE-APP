@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 export default function Home({navigation, route, user}) {
   console.log("user --> ", user)
   const onPressCreate =()=>{
-    navigation.navigate("create")
+    navigation.navigate("Create")
   }
   return (
     <SafeAreaView style={{flex: 1}}>
